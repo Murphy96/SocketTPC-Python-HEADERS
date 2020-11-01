@@ -1,0 +1,15 @@
+from socket import *
+addr = ("localhost",8080)
+srvSock = socket(AF_INET, SOCK_STREAM)
+srvSock.bind(addr)
+srvSock.listen()
+while True:
+    cliSock, addr = srvSock.accept()
+    print ('...conexion recibida')
+    data = cliSock.recv(200)
+    cliSock.send(b'HTTP/1.0 200 OK\r\n')
+    cliSock.send(b"Content-Type: text/html\r\n\r\n")
+    cliSock.send(b'<html><body><h1>Hello World</body></html>')
+    cliSock.send(b"Resp: " + data)
+    cliSock.close()
+srvSock.close()
